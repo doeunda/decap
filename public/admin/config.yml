@@ -1,26 +1,78 @@
-backend:
-  name: github
-  repo: gxanshu/astro-decap-cms-starter #replace with your githu repo
-  branch: main
-  squash_merges: true
-  open_authoring: true
 
-publish_mode: editorial_workflow
-media_folder: public/images
-public_folder: /images
-site_url: "https://astro-decapcms-starter.netlify.app/" # your site name
+
+
+
+local_backend: true
+
+backend:
+  name: git-gateway
+media_folder: "src/assets/images" # Location where files will be stored in the repo
+public_folder: "/assets/images"   # The src attribute for uploaded media
 
 collections:
-  - name: post
-    label: Posts
-    folder: src/content/posts
+  - name: "posts"
+    label: "Posts"
+    folder: "content/posts"
     create: true
-    format: frontmatter
-    preview_path: post/{{slug}}
+    slug: "{{slug}}"
     fields:
-      - { name: title, label: Title }
-      - { name: description, label: Description }
-      - { name: publishedAt, label: Date, widget: date }
-      - {label: "Publish", name: "isPublish", widget: "boolean", default: true}
-      - {label: "Draft", name: "isDraft", widget: "boolean", default: false}
-      - { name: body, label: Body, widget: markdown }
+      - { label: "Title", name: "title", widget: "string" }
+      - { label: "Description", name: "description", widget: "string" }
+      - { label: "Publish Date", name: "publishedAt", widget: "datetime", required: true }
+      - { label: "Is Publish", name: "isPublish", widget: "boolean" }
+      - { label: "Is Draft", name: "isDraft", widget: "boolean" }
+      - { label: "Body", name: "body", widget: "markdown" }
+
+  - name: "restaurants"
+    label: "Restaurants"
+    folder: "content/restaurants"
+    create: true
+    fields:
+      - { label: "Name", name: "name", widget: "string" }
+      - { label: "Location", name: "location", widget: "string" }
+      - { label: "Description", name: "description", widget: "string" }
+
+  - name: "faq"
+    label: "FAQ"
+    folder: "content/faq"
+    create: true
+    fields:
+      - { label: "Question", name: "question", widget: "string" }
+      - { label: "Answer", name: "answer", widget: "markdown" }
+
+  - name: "settings"
+    label: "Settings"
+    files:
+      - label: "Global Settings"
+        name: "global"
+        file: "content/settings/global.yml"
+        fields:
+          - { label: "Site Title", name: "siteTitle", widget: "string" }
+          - { label: "Site Description", name: "siteDescription", widget: "text" }
+
+  - name: "pages"
+    label: "Pages"
+    folder: "content/pages"
+    create: true
+    nested:
+      depth: 2
+    fields:
+      - { label: "Title", name: "title", widget: "string" }
+      - { label: "Body", name: "body", widget: "markdown" }
+
+  - name: "directory"
+    label: "Directory"
+    folder: "content/directory"
+    create: true
+    nested:
+      depth: 2
+    fields:
+      - { label: "Directory Name", name: "name", widget: "string" }
+
+  - name: "subdirectory"
+    label: "Sub Directory"
+    folder: "content/directory/subdirectory"
+    create: true
+    fields:
+      - { label: "Sub Directory Name", name: "name", widget: "string" }
+      - { label: "Description", name: "description", widget: "markdown" }
